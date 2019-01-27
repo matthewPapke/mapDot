@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <style>
        /* Set the size of the div element that contains the map */
       #map {
@@ -13,18 +14,32 @@
     <h3>Find the hottest and coldest locations in America</h3>
     <!--The div element for the map -->
     <div id="map"></div>
+    <button type="button" onclick="addPoint()">Hot</button>
+    <button type="button" onclick="addPoint()">Cold</button>
     <script>
-// Initialize and add the map
-function initMap() {
-  // location roughly in center of US
-  var centerPoint = {lat: 40.8, lng: -100.6};
-  var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 3.8, center: centerPoint});
-}
+	// Initialize and add the map
+	function initMap() {
+	  // location roughly in center of US
+	  var centerPoint = {lat: 40.8, lng: -100.6};
+	  var map = new google.maps.Map(
+	      document.getElementById('map'), {zoom: 3.8, center: centerPoint});
+    var geocoder = new google.maps.Geocoder;
 
-function addPoint(){
+    map.addListener('click', function(event) {
+      var latitude = event.latLng.lat();
+      var longitude = event.latLng.lng();
+      console.log( latitude + ', ' + longitude );  
 
-}
+      var latlng = {lat: latitude, lng: longitude};
+      
+    });
+	}
+
+	function addPoint(){
+		$.ajax({url: "getHottest", success: function(result){
+	    	console.log("got hottest");
+		}});
+	};
 
     </script>
     <!--Load the API from the specified URL
