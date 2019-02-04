@@ -14,6 +14,8 @@
     <h1>Click any location to find the price of Bitcoin</h1>
     Country:<br>
     <input type="text" id="country"><br>
+    Currency:<br>
+    <input type="text" id="currency"><br>
     BTC Price:<br>
     <input type="text" id="price">
     <!--The div element for the map -->
@@ -42,8 +44,9 @@
         });
         markers.push(marker);
         countryName = result.country_name;
+        currencyName = result.currency_name;
         btcPrice = result.btc_price;
-        displayResult(countryName, btcPrice);
+        displayResult(countryName, currencyName, btcPrice);
       }});
 
     });
@@ -56,10 +59,12 @@
     };
 	}
 
-  function displayResult(countryName, price) {
+  function displayResult(countryName, currencyName, price) {
     console.log("displaying result")
     $('#country').val(countryName);
+    $('#currency').val(currencyName);
     $('#price').val(price);
+
   };
   
 
