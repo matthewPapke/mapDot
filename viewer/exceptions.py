@@ -1,0 +1,2 @@
+class LocationBtcPriceException(Exception):
+    pass
