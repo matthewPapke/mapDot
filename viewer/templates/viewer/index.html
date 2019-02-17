@@ -11,7 +11,7 @@
     </style>
   </head>
   <body>
-    <h1>Click any location to find the price of Bitcoin</h1>
+    <h1 id="main">Click any location to find the price of Bitcoin</h1>
     <font size="20">Country:</font><br/>
     <input type="text" id="country"><br/>
     <font size="20">Currency:</font><br/>
@@ -26,32 +26,36 @@
 	  // location roughly in center of US
 	  var centerPoint = {lat: 40.8, lng: -100.6};
 	  var map = new google.maps.Map(
-	      document.getElementById('map'), {zoom: 3.8, center: centerPoint});
-    var geocoder = new google.maps.Geocoder;
+	      document.getElementById('map'), 
+        {zoom: 3.8, center: centerPoint}
+    );
     var markers = []
 
     map.addListener('click', function(event) {
       var latitude = event.latLng.lat();
       var longitude = event.latLng.lng();
-      console.log( latitude + ', ' + longitude );  
       var latLng = {lat: latitude, lng: longitude};
-      $.ajax({url: "getBtcPrice", type: "POST", data: JSON.stringify(latLng), success: function(result){
-        clearOverlays();
-        console.log(result);
-        marker = new google.maps.Marker({
-          position: latLng,
-          map: map
-        });
-        markers.push(marker);
-        countryName = result.country_name;
-        currencyName = result.currency_name;
-        btcPrice = result.btc_price;
-        displayResult(countryName, currencyName, btcPrice);
-      }});
+
+      $.ajax({
+          url: "getBtcPrice", type: "POST", data: JSON.stringify(latLng), 
+          success: function(result){
+                      clearMarkers();
+                      console.log(result);
+                      marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map
+                      });
+                      markers.push(marker);
+                      displayResult(result);
+                  },
+          error: function () {
+                     alert("Sorry, something went wrong");
+                 }
+      });
 
     });
 
-    function clearOverlays() {
+    function clearMarkers() {
       for (var i = 0; i < markers.length; i++ ) {
         markers[i].setMap(null);
       }
@@ -59,11 +63,19 @@
     };
 	}
 
-  function displayResult(countryName, currencyName, price) {
-    $('#country').val(countryName);
-    $('#currency').val(currencyName);
-    $('#price').val(price);
-
+  function displayResult(result) {
+    if(result.failure_message !== null && result.failure_message !== undefined){
+      $('#country').val("");
+      $('#currency').val("");
+      $('#price').val("");    
+      alert(result.failure_message); 
+    }
+    else{
+      $('#country').val(result.country_name);
+      $('#currency').val(result.currency_name);
+      $('#price').val(result.btc_price);  
+    }
+    
   };
   
 
