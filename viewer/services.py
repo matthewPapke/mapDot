@@ -8,19 +8,16 @@ from . import exceptions as e
 def get_location_btc_price_info(lat, lng):
 	country = get_country_from_coordinates(lat,lng)
 	if country is None:
-		raise e.LocationBtcPriceException('Unable to reverse geocode coordinates')
-		# return {'failure_message': 'Unable to reverse geocode coordinates'}
+		return {'failure_message': 'Unable to reverse geocode coordinates'}
 	
 	currency = pyc.currencies.get(numeric=country.numeric)
 	if currency is None:
-		raise e.LocationBtcPriceException('Unable to get currency information about {}'.format(country.name))
-		# return {'failure_message': 'Unable to get currency information about country'}
+		return {'failure_message': 'Currency information not available for {}'.format(country.name)}
 	
 	# get currency and BTC price conversion for given country
 	btc_price = get_btc_price(currency.alpha_3)
 	if btc_price is None:
-		raise e.LocationBtcPriceException('BTC exchange rate is not available for currency {}'.format(currency.name))
-		# return {'failure_message': 'BTC exchange rate is not available for currency'}
+		return {'failure_message': 'BTC exchange rate is not available for {}'.format(currency.name)}
 
 	# return location, currency, and btc information
 	return {'btc_price': btc_price, 'currency_name': currency.name, 'country_name': country.name}

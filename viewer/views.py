@@ -26,8 +26,8 @@ def get_btc_price(request):
 		result = services.get_location_btc_price_info(lat, lng)
 		return JsonResponse(result)
 
-	except e.LocationBtcPriceException as ex:
-		result = {'failure_message': str(ex)}
-		return JsonResponse(result)
+	except Exception as ex:
+		print(str(ex))
+		return HttpResponseServerError(str(ex))
 
 
