@@ -2,58 +2,40 @@
 <html>
   <head>
   	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    <style>
-       /* Set the size of the div element that contains the map */
-      #map {
-        height: 400px;  /* The height is 400 pixels */
-        width: 50%;  /* The width is the width of the web page */
-       }
-    </style>
-  </head>
-  <body>
-    <h1 id="main">Click any location to find the price of Bitcoin</h1>
-    <font size="20">Country:</font><br/>
-    <input type="text" id="country"><br/>
-    <font size="20">Currency:</font><br/>
-    <input type="text" id="currency"><br/>
-    <font size="20">BTC Price:</font><br/>
-    <input type="text" id="price">
-    <!--The div element for the map -->
-    <div id="map"></div>
     <script>
-	// Initialize and add the map
-	function initMap() {
-	  // location roughly in center of US
-	  var centerPoint = {lat: 40.8, lng: -100.6};
-	  var map = new google.maps.Map(
-	      document.getElementById('map'), 
-        {zoom: 3.8, center: centerPoint}
-    );
-    var markers = []
+    // Initialize and add the map
+    function initMap() {
+      // location roughly in center of US
+      var centerPoint = {lat: 40.8, lng: -100.6};
+      var map = new google.maps.Map(
+          document.getElementById("map"), 
+          {zoom: 3.8, center: centerPoint}
+      );
+      var markers = []
 
-    map.addListener('click', function(event) {
-      var latitude = event.latLng.lat();
-      var longitude = event.latLng.lng();
-      var latLng = {lat: latitude, lng: longitude};
+      map.addListener("click", function(event) {
+        var latitude = event.latLng.lat();
+        var longitude = event.latLng.lng();
+        var latLng = {lat: latitude, lng: longitude};
 
-      $.ajax({
-          url: "getBtcPrice", type: "POST", data: JSON.stringify(latLng), 
-          success: function(result){
-                      clearMarkers();
-                      console.log(result);
-                      marker = new google.maps.Marker({
-                        position: latLng,
-                        map: map
-                      });
-                      markers.push(marker);
-                      displayResult(result);
-                  },
-          error: function () {
-                     alert("Sorry, something went wrong");
-                 }
+        $.ajax({
+            url: "getBtcPrice", type: "POST", data: JSON.stringify(latLng), 
+            success: function(result){
+                        clearMarkers();
+                        console.log(result);
+                        marker = new google.maps.Marker({
+                          position: latLng,
+                          map: map
+                        });
+                        markers.push(marker);
+                        displayResult(result);
+                    },
+            error: function () {
+                       alert("Sorry, something went wrong");
+                   }
+        });
+
       });
-
-    });
 
     function clearMarkers() {
       for (var i = 0; i < markers.length; i++ ) {
@@ -61,32 +43,72 @@
       }
       markers.length = 0;
     };
-	}
+   }
 
-  function displayResult(result) {
-    if(result.failure_message !== null && result.failure_message !== undefined){
-      $('#country').val("");
-      $('#currency').val("");
-      $('#price').val("");    
-      alert(result.failure_message); 
-    }
-    else{
-      $('#country').val(result.country_name);
-      $('#currency').val(result.currency_name);
-      $('#price').val(result.btc_price);  
-    }
-    
-  };
+    function displayResult(result) {
+      if(result.failure_message !== null && result.failure_message !== undefined){
+        $('#country').val("");
+        $('#currency').val("");
+        $('#price').val("");    
+        alert(result.failure_message); 
+      }
+      else{
+        $('#country').val(result.country_name);
+        $('#currency').val(result.currency_name);
+        $('#price').val(result.btc_price);  
+      }
+      
+    };
   
 
     </script>
     <!--Load the API from the specified URL
     * The async attribute allows the browser to render the page while the API loads
-    * The key parameter will contain your own API key (which is not needed for this tutorial)
     * The callback parameter executes the initMap() function
     -->
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5cQgXAu38Rzu5lVm4oUTgj4qbwRIpngs&callback=initMap">
     </script>
+    <style>
+       /* Set the size of the div element that contains the map */
+      #map {
+        height: 1700px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+
+      #header {
+        text-align: center;
+        border: 5px solid black;
+      }
+
+      label {
+        font-family: verdana;
+        font-size: 30px;
+        padding: 10px;
+        font-weight: bold;
+      }
+
+      input {
+        font-family: verdana;
+        font-size: 30px;
+      }
+
+      h1 {
+        font-family: verdana;
+        font-size: 50px;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>Click any location to find the price of a Bitcoin</h1>
+      <label>Country:<input type="text" id="country"></label>
+      <label>Currency:<input type="text" id="currency"></label>
+      <label>BTC Price:<input type="text" id="price"></label>
+    </div>
+    <!--The div element for the map -->
+    <div id="map"></div>
   </body>
 </html>
