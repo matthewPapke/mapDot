@@ -1,0 +1,27 @@
+ /* Set the size of the div element that contains the map */
+#map {
+  height: 1700px;  /* The height is 400 pixels */
+  width: 100%;  /* The width is the width of the web page */
+ }
+
+#header {
+  text-align: center;
+  border: 5px solid black;
+}
+
+label {
+  font-family: verdana;
+  font-size: 30px;
+  padding: 10px;
+  font-weight: bold;
+}
+
+input {
+  font-family: verdana;
+  font-size: 30px;
+}
+
+h1 {
+  font-family: verdana;
+  font-size: 50px;
+}
