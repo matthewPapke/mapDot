@@ -1,6 +1,8 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'viewer/map_styles.css' %}" />
   	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script>
     // Initialize and add the map
@@ -74,36 +76,6 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5cQgXAu38Rzu5lVm4oUTgj4qbwRIpngs&callback=initMap">
     </script>
-    <style>
-       /* Set the size of the div element that contains the map */
-      #map {
-        height: 1700px;  /* The height is 400 pixels */
-        width: 100%;  /* The width is the width of the web page */
-       }
-
-      #header {
-        text-align: center;
-        border: 5px solid black;
-      }
-
-      label {
-        font-family: verdana;
-        font-size: 30px;
-        padding: 10px;
-        font-weight: bold;
-      }
-
-      input {
-        font-family: verdana;
-        font-size: 30px;
-      }
-
-      h1 {
-        font-family: verdana;
-        font-size: 50px;
-      }
-    </style>
-
   </head>
 
   <body>
