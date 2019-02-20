@@ -19,7 +19,7 @@
         var latLng = {lat: latitude, lng: longitude};
 
         $.ajax({
-            url: "getBtcPrice", type: "POST", data: JSON.stringify(latLng), 
+            url: "getBtcPrice", type: "GET", data: {"lat": latitude, "lng": longitude}, 
             success: function(result){
                         clearMarkers();
                         console.log(result);
@@ -30,20 +30,25 @@
                         markers.push(marker);
                         displayResult(result);
                     },
-            error: function () {
-                       alert("Sorry, something went wrong");
+            error: function (xhr) {
+                      respTxt = xhr.responseText;
+                      if(respTxt !== null && respTxt !==undefined){
+                        alert(respTxt);
+                      } else {
+                        alert("Sorry, something went wrong");
+                      }
                    }
         });
 
       });
 
-    function clearMarkers() {
-      for (var i = 0; i < markers.length; i++ ) {
-        markers[i].setMap(null);
-      }
-      markers.length = 0;
-    };
-   }
+      function clearMarkers() {
+        for (var i = 0; i < markers.length; i++ ) {
+          markers[i].setMap(null);
+        }
+        markers.length = 0;
+      };
+    }
 
     function displayResult(result) {
       if(result.failure_message !== null && result.failure_message !== undefined){
